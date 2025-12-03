@@ -41,6 +41,7 @@ public class AuthenticationService {
   }
 
   private Object generateAndSaveActivationToken(User user) {
+    // todo generate token
     return null;
   }
 }
