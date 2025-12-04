@@ -1,12 +1,17 @@
 package com.artur.book.auth;
 
+import com.artur.book.email.EmailService;
+import com.artur.book.email.EmailTemplateName;
 import com.artur.book.role.RoleRepository;
 import com.artur.book.user.Token;
 import com.artur.book.user.TokenRepository;
 import com.artur.book.user.User;
 import com.artur.book.user.UserRepository;
+import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +26,14 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
   private final TokenRepository tokenRepository;
+  private final EmailService emailService;
+  @Value("${application.mailing.frontend.activation-url}")
+  private String activationUrl;
 
-  public void register(@Valid RegistrationRequest req) { // Todo @Valid annotation
+  @Transactional
+  public void register(@Valid RegistrationRequest req) throws MessagingException { // Todo @Valid annotation
     var userRole = roleRepository.findByName("USER") // todo improve exception handling
-      .orElseThrow(() -> new IllegalStateException("Role User not found"));
+      .orElseThrow(() -> new IllegalStateException("Role User not initialized"));
 
     var user = User.builder()
       .firstname(req.getFirstname())
@@ -40,12 +49,21 @@ public class AuthenticationService {
     sendValidationEmail(user);
   }
 
-  private void sendValidationEmail(User user) {
+  private void sendValidationEmail(User user) throws MessagingException {
     var newToken = generateAndSaveActivationToken(user);
-    // todo send email
+
+    emailService.sendEmail(
+      user.getEmail(),
+      user.fullName(),
+      EmailTemplateName.ACTIVATE_ACCOUNT,
+      activationUrl,
+      newToken,
+      "Account activation"
+    );
   }
 
-  private Object generateAndSaveActivationToken(User user) {
+  private String generateAndSaveActivationToken(User user) {
+    // Generate a token
     String generatedToken = generateActivationCode(6);
     var token = Token.builder()
       .token(generatedToken)
@@ -53,8 +71,8 @@ public class AuthenticationService {
       .expiresAt(LocalDateTime.now().plusMinutes(15))
       .user(user)
       .build();
-
     tokenRepository.save(token);
+
     return generatedToken;
   }
 
