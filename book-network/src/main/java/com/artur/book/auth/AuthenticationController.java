@@ -21,4 +21,18 @@ public class AuthenticationController {
     authService.register(req);
     return ResponseEntity.accepted().build();
   }
+
+  @PostMapping("/authenticate")
+  public ResponseEntity<AuthenticationResponse> authenticate(
+    @RequestBody @Valid AuthenticationRequest req
+  ) {
+    return ResponseEntity.ok(authService.authenticate(req));
+  }
+
+  @GetMapping("/activate-account")
+  public void confirm(
+    @RequestParam String token
+  ) {
+    authService.activateAccount(token);
+  }
 }
