@@ -1,7 +1,6 @@
 package com.artur.book.handler;
 
 import jakarta.mail.MessagingException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -44,7 +43,7 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(BadCredentialsException.class)
-  public ResponseEntity<ExceptionResponse> handleException(BadCredentialsException exp) {
+  public ResponseEntity<ExceptionResponse> handleException() {
     return ResponseEntity.status(UNAUTHORIZED)
       .body(
         ExceptionResponse.builder()

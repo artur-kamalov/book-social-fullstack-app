@@ -2,8 +2,6 @@ package com.artur.book.handler;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-
 import static org.springframework.http.HttpStatus.*;
 
 public enum BusinessErrorCodes {

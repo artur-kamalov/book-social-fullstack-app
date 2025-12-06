@@ -26,7 +26,7 @@ public class JwtService {
   }
 
   public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
-    return buildToken(claims, userDetails, jwtExpiration);
+    return buildToken(claims, userDetails, this.jwtExpiration);
   }
 
   private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long jwtExpiration) {
