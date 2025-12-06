@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,12 @@ public class AuthenticationService {
   public void register(@Valid RegistrationRequest req) throws MessagingException { // Todo @Valid annotation
     var userRole = roleRepository.findByName("USER") // todo improve exception handling
       .orElseThrow(() -> new IllegalStateException("Role User not initialized"));
+
+    // todo Better User exists error handling
+    if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+      throw new RuntimeException("User with this email already exists");
+    }
+
 
     var user = User.builder()
       .firstname(req.getFirstname())
@@ -111,10 +118,24 @@ public class AuthenticationService {
     return AuthenticationResponse.builder().token(jwtToken).build();
   }
 
-  @Transactional
-  public void activateAccount(String token) {
+//  @Transactional
+  public void activateAccount(String token) throws MessagingException {
     Token savedToken = tokenRepository.findByToken(token)
       //todo exception has to be defined
-      .orElseThrow(() -> new RuntimeException("Token not found"));
+      .orElseThrow(() -> new RuntimeException("Invalid token"));
+
+    if(LocalDateTime.now().isAfter(savedToken.getExpiresAt())) {
+      sendValidationEmail(savedToken.getUser());
+      throw new RuntimeException("Activation token expired. New token sent to the same email");
+    }
+
+    var user = userRepository.findById(savedToken.getUser().getId())
+      .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+    user.setEnabled(true);
+    userRepository.save(user);
+
+    savedToken.setValidatedAt(LocalDateTime.now());
+    tokenRepository.save(savedToken);
   }
 }
