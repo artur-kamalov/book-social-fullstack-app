@@ -15,7 +15,7 @@ To set up the backend of the Book Social Network project, follow these steps:
 3. Navigate to the book-social-network directory:
 
 ```bash
-  cd book-social-network
+  cd book-network
 ```
 
 4. Install dependencies (assuming Maven is installed):
