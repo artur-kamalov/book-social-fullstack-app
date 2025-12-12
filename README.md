@@ -1,15 +1,35 @@
-Backend setup Instructions
 To set up the backend of the Book Social Network project, follow these steps:
 
-Clone the repository:
-   git clone https://github.com/artur-kamalov/book-social-fullstack-app
-Run the docker-compose file
+1. Clone the repository:
+
+```bash
+   git clone  https://github.com/artur-kamalov/book-social-fullstack-app.git
+```
+
+2. Run the docker-compose file
+
+```bash
   docker-compose up -d
-Navigate to the book-social-network directory:
+```
+
+3. Navigate to the book-social-network directory:
+
+```bash
   cd book-social-network
-Install dependencies (assuming Maven is installed):
+```
+
+4. Install dependencies (assuming Maven is installed):
+
+```bash
   mvn clean install
-Run the application but first replace the x.x.x with the current version from the pom.xml file
+```
+
+4. Run the application but first replace the `x.x.x` with the current version from the `pom.xml` file
+
+```bash
   java -jar target/book-network-api-x.x.x.jar
-Access the API documentation using Swagger UI:
+```
+
+5. Access the API documentation using Swagger UI:
+
 Open a web browser and go to `http://localhost:8088/swagger-ui/index.html.
