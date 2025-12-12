@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+@use "bootstrap/dist/css/bootstrap.min.css";
+@use "global-css-rules/reset";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.login-container {
+  width: 800px !important;
+  margin-top: 15%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
