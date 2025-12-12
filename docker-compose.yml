@@ -20,6 +20,24 @@ services:
     ports:
       - 1080:1080
       - 1025:1025
+    networks:
+      - spring-demo
+  spring-app: # New service for your Spring Boot application
+    container_name: spring-app-bsn
+    build: .       # The specific Dockerfile to use within that context
+    ports:
+      - "8088:8088" # Map the container port to the host machine
+    networks:
+      - spring-demo
+    depends_on:
+      - postgres # Ensure postgres starts before the spring app
+      - mail-dev # Ensure mail-dev starts before the spring app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-sql-bsn:5432/book_social_network
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      # Optional: Explicitly set the active profile to 'dev' inside the container
+      SPRING_PROFILES_ACTIVE: dev
 
 networks:
   spring-demo:

@@ -24,12 +24,12 @@ To set up the backend of the Book Social Network project, follow these steps:
   mvn clean install
 ```
 
-4. Run the application but first replace the `x.x.x` with the current version from the `pom.xml` file
+4. Run the application
 
 ```bash
-  java -jar target/book-network-api-x.x.x.jar
+  java -jar target/book-network-api-0.0.1-SNAPSHOT.jar
 ```
 
 5. Access the API documentation using Swagger UI:
 
-Open a web browser and go to `http://localhost:8088/swagger-ui/index.html.
+Open a web browser and go to http://localhost:8088/api/v1/swagger-ui/index.html
