@@ -6,7 +6,6 @@ import com.artur.book.file.FileStorageService;
 import com.artur.book.history.BookTransactionHistory;
 import com.artur.book.history.BookTransactionHistoryRepository;
 import com.artur.book.user.User;
-import jakarta.mail.internet.MimeBodyPart;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
