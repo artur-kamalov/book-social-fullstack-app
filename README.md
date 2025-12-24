@@ -27,7 +27,7 @@ To set up the backend of the Book Social Network project, follow these steps:
 4. Run the application
 
 ```bash
-  java -jar target/book-network-api-0.0.1-SNAPSHOT.jar
+  java -jar target/book-network-api-x.x.x-SNAPSHOT.jar
 ```
 
 5. Access the API documentation using Swagger UI:
